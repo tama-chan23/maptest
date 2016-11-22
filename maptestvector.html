@@ -29,38 +29,10 @@
     <script src="https://openlayers.org/en/v3.19.0/build/ol.js"></script>
   </head>
   <body>
+	  
     <div id="map" class="map"></div>
     <div id="info">&nbsp;</div>
     <script>
-	
-	$(document).ready(function() {
-	    $.ajax({
-	        type: "GET",
-	        url: "data.txt",
-	        dataType: "text",
-	        success: function(data) {processData(data);}
-	     });
-	});
-
-	function processData(allText) {
-	    var allTextLines = allText.split(/\r\n|\n/);
-	    var headers = allTextLines[0].split(',');
-	    var lines = [];
-
-	    for (var i=1; i<allTextLines.length; i++) {
-	        var data = allTextLines[i].split(',');
-	        if (data.length == headers.length) {
-
-	            var tarr = [];
-	            for (var j=0; j<headers.length; j++) {
-	                tarr.push(headers[j]+":"+data[j]);
-	            }
-	            lines.push(tarr);
-	        }
-	    }
-	    // alert(lines);
-	}
-	
       var style = new ol.style.Style({
         fill: new ol.style.Fill({
           color: 'rgba(255, 255, 255, 0.6)'
@@ -182,5 +154,18 @@
         displayFeatureInfo(evt.pixel);
       });
     </script>
+	  
+	  <input type="file" id="openFile">
+	  <br>
+	  <pre id="fileContents"></pre>
+	  <script>
+	  	document.getElementById("openFile").addEventListener('change', function(){
+			var fr = new FileReader();
+	   	 	fr.onload = function(){
+				document.getElementById("fileContents").textContent = this.result;
+	   	 	}
+	   	 	fr.readAsText(this.files[0]);
+	  	});
+	  </script>
   </body>
 </html>
